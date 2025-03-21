@@ -10,6 +10,7 @@ public class StudentMap : Profile
     public StudentMap()
     {
         CreateMap<AddStudentRequestViewModel, Student>();
+        CreateMap<UpdateStudentRequestViewModel, Student>();
         CreateMap<Student, StudentResponseViewModel>();
     }
 }

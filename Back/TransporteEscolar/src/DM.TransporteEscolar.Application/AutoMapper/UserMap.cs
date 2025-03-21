@@ -9,6 +9,7 @@ public class UserMap : Profile
     public UserMap()
     {
         CreateMap<AddUserRequestViewModel, User>();
+        CreateMap<UpdateUserRequestViewModel, User>();
         CreateMap<User, UserResponseViewModel>();
     }
 }

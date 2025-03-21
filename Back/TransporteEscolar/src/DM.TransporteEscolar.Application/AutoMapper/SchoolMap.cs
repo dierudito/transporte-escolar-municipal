@@ -10,6 +10,7 @@ public class SchoolMap : Profile
     public SchoolMap()
     {
         CreateMap<AddSchoolRequestViewModel, School>();
+        CreateMap<UpdateSchoolRequestViewModel, School>();
         CreateMap<School, SchoolResponseViewModel>();
     }
 }

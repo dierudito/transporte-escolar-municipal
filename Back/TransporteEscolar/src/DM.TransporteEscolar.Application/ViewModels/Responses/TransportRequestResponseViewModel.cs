@@ -7,4 +7,4 @@ public record TransportRequestResponseViewModel(
     string? AdditionalInfo,
     Guid StudentId,
     Guid SchoolId,
-    StatusRequestViewModel StatusRequest);
+    StatusRequestViewModel Status);
