@@ -3,9 +3,26 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{1E9161BC-DDF5-4D53-9E41-06F867ABE1F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DM.TransporteEscolar.Domain", "src\DM.TransporteEscolar.Domain\DM.TransporteEscolar.Domain.csproj", "{8EE028CF-18A4-41AE-AA8A-69598D9EC57E}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8EE028CF-18A4-41AE-AA8A-69598D9EC57E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EE028CF-18A4-41AE-AA8A-69598D9EC57E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EE028CF-18A4-41AE-AA8A-69598D9EC57E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EE028CF-18A4-41AE-AA8A-69598D9EC57E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8EE028CF-18A4-41AE-AA8A-69598D9EC57E} = {1E9161BC-DDF5-4D53-9E41-06F867ABE1F7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {447CDAC6-F0D8-4242-9631-557465C77317}
