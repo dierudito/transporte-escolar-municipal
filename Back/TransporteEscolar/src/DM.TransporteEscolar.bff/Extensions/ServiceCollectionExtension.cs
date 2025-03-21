@@ -1,4 +1,7 @@
-﻿using DM.TransporteEscolar.Infra.CrossCutting.IoC.Configurations;
+﻿using DM.TransporteEscolar.Application.AppServices;
+using DM.TransporteEscolar.Application.Interfaces;
+using DM.TransporteEscolar.Infra.CrossCutting.IoC.Configurations;
+using DM.TransporteEscolar.Infra.CrossCutting.Shared.Configurations;
 
 namespace DM.TransporteEscolar.bff.Extensions;
 
@@ -13,7 +16,11 @@ public static class ServiceCollectionExtension
         .AddAppServices();
 
     private static IServiceCollection AddAppServices(this IServiceCollection services) =>
-        services;
+        services
+            .AddTransient<IUserAppService, UserAppService>()
+            .AddTransient<ISchoolAppService, SchoolAppService>()
+            .AddTransient<IStudentAppService, StudentAppService>()
+            .AddTransient<ITransportRequestAppService, TransportRequestAppService>();
 
     public static IServiceCollection AddDocumentation(this IServiceCollection services) =>
         services

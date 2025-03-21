@@ -12,5 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DM.TransporteEscolar.Domain\DM.TransporteEscolar.Domain.csproj" />
+    <ProjectReference Include="..\DM.TransporteEscolar.Infra.CrossCutting.Shared\DM.TransporteEscolar.Infra.CrossCutting.Shared.csproj" />
   </ItemGroup>
 </Project>

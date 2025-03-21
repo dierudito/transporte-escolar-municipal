@@ -1,4 +1,4 @@
-﻿using DM.TransporteEscolar.Infra.CrossCutting.IoC.Configurations;
+﻿using DM.TransporteEscolar.Infra.CrossCutting.Shared.Configurations;
 using System.Net;
 using System.Text.Json.Serialization;
 

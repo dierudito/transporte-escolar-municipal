@@ -1,4 +1,4 @@
-﻿using DM.TransporteEscolar.Infra.CrossCutting.IoC.Configurations;
+﻿using DM.TransporteEscolar.Infra.CrossCutting.Shared.Configurations;
 
 namespace DM.TransporteEscolar.bff.Extensions;
 
@@ -9,6 +9,8 @@ public static class BuildExtension
         ApiConfigurations.ConncetionString =
             builder.Configuration.GetConnectionString("TransporteEscolarDbPostgres") ?? string.Empty;
         ApiConfigurations.BackendUrl =
-            builder.Configuration.GetValue<string>("BackendUrl") ?? string.Empty;
+            builder.Configuration.GetValue<string>("Config:Cors:BackendUrl") ?? string.Empty;
+        ApiConfigurations.CorsPolicyName =
+            builder.Configuration.GetValue<string>("Config:Cors:Name") ?? string.Empty;
     }
 }

@@ -1,4 +1,5 @@
-﻿using DM.TransporteEscolar.Infra.Data.Context;
+﻿using DM.TransporteEscolar.Infra.CrossCutting.Shared.Configurations;
+using DM.TransporteEscolar.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
