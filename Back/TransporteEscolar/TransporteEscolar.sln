@@ -3,9 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{1E9161BC-DDF5-4D53-9E41-06F867ABE1F7}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Domain", "3 - Domain", "{1E9161BC-DDF5-4D53-9E41-06F867ABE1F7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DM.TransporteEscolar.Domain", "src\DM.TransporteEscolar.Domain\DM.TransporteEscolar.Domain.csproj", "{8EE028CF-18A4-41AE-AA8A-69598D9EC57E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Infra", "4 - Infra", "{4899B6EB-EE2C-4DE1-B0AA-22ED1F4A1FA2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.1 - Data", "4.1 - Data", "{6F59E2C3-0272-45E1-8790-B0DF407E8E08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DM.TransporteEscolar.Infra.Data", "src\DM.TransporteEscolar.Infra.Data\DM.TransporteEscolar.Infra.Data.csproj", "{33E839CD-E502-4171-9170-EEEA0658B153}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Application", "2 - Application", "{54AC3F70-55B4-4FDD-8144-949B505F4709}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DM.TransporteEscolar.Application", "src\DM.TransporteEscolar.Application\DM.TransporteEscolar.Application.csproj", "{3ACA162E-3E87-41DC-AB78-509624FB0531}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Presentation", "1 - Presentation", "{6B3ECE38-2A33-4295-B1A2-E24CB377A6C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DM.TransporteEscolar.bff", "src\DM.TransporteEscolar.bff\DM.TransporteEscolar.bff.csproj", "{D0FDC3CC-2619-421A-89A9-CEA5CA6087BB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.2 - CrossCutting", "4.2 - CrossCutting", "{16F1E698-EE7D-4373-A362-AFC8BE98E30B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DM.TransporteEscolar.Infra.CrossCutting.IoC", "src\DM.TransporteEscolar.Infra.CrossCutting.IoC\DM.TransporteEscolar.Infra.CrossCutting.IoC.csproj", "{F3F85AFB-0CB5-43CD-A9FB-8CF6C96208C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,12 +35,34 @@ Global
 		{8EE028CF-18A4-41AE-AA8A-69598D9EC57E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EE028CF-18A4-41AE-AA8A-69598D9EC57E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EE028CF-18A4-41AE-AA8A-69598D9EC57E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33E839CD-E502-4171-9170-EEEA0658B153}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33E839CD-E502-4171-9170-EEEA0658B153}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33E839CD-E502-4171-9170-EEEA0658B153}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33E839CD-E502-4171-9170-EEEA0658B153}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3ACA162E-3E87-41DC-AB78-509624FB0531}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3ACA162E-3E87-41DC-AB78-509624FB0531}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3ACA162E-3E87-41DC-AB78-509624FB0531}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3ACA162E-3E87-41DC-AB78-509624FB0531}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0FDC3CC-2619-421A-89A9-CEA5CA6087BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0FDC3CC-2619-421A-89A9-CEA5CA6087BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0FDC3CC-2619-421A-89A9-CEA5CA6087BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0FDC3CC-2619-421A-89A9-CEA5CA6087BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3F85AFB-0CB5-43CD-A9FB-8CF6C96208C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3F85AFB-0CB5-43CD-A9FB-8CF6C96208C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3F85AFB-0CB5-43CD-A9FB-8CF6C96208C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3F85AFB-0CB5-43CD-A9FB-8CF6C96208C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8EE028CF-18A4-41AE-AA8A-69598D9EC57E} = {1E9161BC-DDF5-4D53-9E41-06F867ABE1F7}
+		{6F59E2C3-0272-45E1-8790-B0DF407E8E08} = {4899B6EB-EE2C-4DE1-B0AA-22ED1F4A1FA2}
+		{33E839CD-E502-4171-9170-EEEA0658B153} = {6F59E2C3-0272-45E1-8790-B0DF407E8E08}
+		{3ACA162E-3E87-41DC-AB78-509624FB0531} = {54AC3F70-55B4-4FDD-8144-949B505F4709}
+		{D0FDC3CC-2619-421A-89A9-CEA5CA6087BB} = {6B3ECE38-2A33-4295-B1A2-E24CB377A6C5}
+		{16F1E698-EE7D-4373-A362-AFC8BE98E30B} = {4899B6EB-EE2C-4DE1-B0AA-22ED1F4A1FA2}
+		{F3F85AFB-0CB5-43CD-A9FB-8CF6C96208C2} = {16F1E698-EE7D-4373-A362-AFC8BE98E30B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {447CDAC6-F0D8-4242-9631-557465C77317}

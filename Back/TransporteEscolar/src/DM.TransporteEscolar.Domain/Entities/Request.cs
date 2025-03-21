@@ -3,13 +3,13 @@ using DM.TransporteEscolar.Domain.Enums;
 
 namespace DM.TransporteEscolar.Domain.Entities;
 
-public class Requests : EntityBase
+public class Request : EntityBase
 {
     public Guid StudentId { get; set; }
-    public virtual Students Students { get; set; }
+    public virtual Student Student { get; set; } = null!;
     public Guid SchoolId { get; set; }
-    public virtual Schools Schools { get; set; }
-    public DateTime RequestDate { get; set; }
+    public virtual School School { get; set; } = null!;
+    public DateTime Date { get; set; }
     public StatusRequest Status { get; set; }
-    public string AdditionalInfo { get; set; }
+    public string? AdditionalInfo { get; set; }
 }

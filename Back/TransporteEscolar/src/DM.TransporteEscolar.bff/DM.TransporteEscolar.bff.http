@@ -1,0 +1,6 @@
+@DM.TransporteEscolar.bff_HostAddress = http://localhost:5217
+
+GET {{DM.TransporteEscolar.bff_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
