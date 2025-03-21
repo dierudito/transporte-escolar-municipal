@@ -8,7 +8,7 @@ public class TransporteEscolarDbContext(DbContextOptions<TransporteEscolarDbCont
 {
     public DbSet<User> Users { get; set; }
     public DbSet<Student> Students { get; set; }
-    public DbSet<Request> Requests { get; set; }
+    public DbSet<TransportRequest> Requests { get; set; }
     public DbSet<School> Schools { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

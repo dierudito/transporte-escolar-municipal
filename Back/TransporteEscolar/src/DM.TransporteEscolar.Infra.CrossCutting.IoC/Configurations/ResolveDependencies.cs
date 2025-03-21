@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using DM.TransporteEscolar.Domain.Interfaces.Repositories;
+using DM.TransporteEscolar.Domain.Interfaces.Services;
+using DM.TransporteEscolar.Domain.Services;
+using DM.TransporteEscolar.Infra.Data.Repository;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
 
@@ -31,8 +35,16 @@ public static class AppServiceCollectionExtensions
     }
 
     private static IServiceCollection AddRepositories(this IServiceCollection services) =>
-        services;
+        services
+            .AddScoped<IUserRepository, UserRepository>()
+            .AddScoped<IStudentRepository, StudentRepository>()
+            .AddScoped<ISchoolRepository, SchoolRepository>()
+            .AddScoped<ITransportRequestRepository, TransportRequestRepository>();
 
     private static IServiceCollection AddServices(this IServiceCollection services) =>
-        services;
+        services
+            .AddScoped<IUserService, UserService>()
+            .AddScoped<IStudentService, StudentService>()
+            .AddScoped<ISchoolService, SchoolService>()
+            .AddScoped<ITransportRequestService, TransportRequestService>();
 }

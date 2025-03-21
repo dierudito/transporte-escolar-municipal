@@ -3,7 +3,7 @@ using DM.TransporteEscolar.Domain.Enums;
 
 namespace DM.TransporteEscolar.Domain.Entities;
 
-public class Request : EntityBase
+public class TransportRequest : Entity
 {
     public Guid StudentId { get; set; }
     public virtual Student Student { get; set; } = null!;

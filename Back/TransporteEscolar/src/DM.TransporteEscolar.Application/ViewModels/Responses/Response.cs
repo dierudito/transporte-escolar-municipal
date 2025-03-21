@@ -2,7 +2,7 @@
 using System.Net;
 using System.Text.Json.Serialization;
 
-namespace DM.TransporteEscolar.Application.ViewModels;
+namespace DM.TransporteEscolar.Application.ViewModels.Responses;
 
 public class Response<TData>
 {

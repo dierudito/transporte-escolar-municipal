@@ -7,7 +7,7 @@ public class StudentMap : IEntityTypeConfiguration<Student>
 {
     public void Configure(EntityTypeBuilder<Student> builder)
     {
-        builder.ToTable("Students");
+        builder.ToTable("students");
 
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Address).IsRequired().HasMaxLength(255);

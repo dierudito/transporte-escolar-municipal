@@ -2,7 +2,7 @@
 using DM.TransporteEscolar.Domain.Enums;
 
 namespace DM.TransporteEscolar.Domain.Entities;
-public class User : EntityBase
+public class User : Entity
 {
     public string Name { get; set; } = null!;
     public string Email { get; set; } = null!;

@@ -2,7 +2,7 @@
 
 namespace DM.TransporteEscolar.Domain.Entities;
 
-public class Student : EntityBase
+public class Student : Entity
 {
     public string Name { get; set; }
     public DateOnly BirthDate { get; set; }
@@ -11,5 +11,5 @@ public class Student : EntityBase
     public string? Cpf { get; set; }
     public Guid UserId { get; set; }
     public virtual User Users { get; set; }
-    public ICollection<Request> Requests { get; set; }
+    public ICollection<TransportRequest> TransportRequests { get; set; }
 }

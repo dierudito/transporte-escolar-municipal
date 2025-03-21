@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DM.TransporteEscolar.Application\DM.TransporteEscolar.Application.csproj" />
     <ProjectReference Include="..\DM.TransporteEscolar.Infra.Data\DM.TransporteEscolar.Infra.Data.csproj" />
   </ItemGroup>
 

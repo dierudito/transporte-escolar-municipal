@@ -2,12 +2,12 @@
 
 namespace DM.TransporteEscolar.Domain.Entities;
 
-public class School : EntityBase
+public class School : Entity
 {
     public string Name { get; set; } = null!;
     public string Address { get; set; } = null!;
     public string ZipCode { get; set; } = null!;
     public string Phone { get; set; } = null!;
 
-    public ICollection<Request> Requests { get; set; }
+    public ICollection<TransportRequest> TransportRequests { get; set; }
 }

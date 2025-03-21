@@ -7,7 +7,7 @@ public class UserMap : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.ToTable("Users");
+        builder.ToTable("users");
 
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Address).IsRequired(false).HasMaxLength(255);

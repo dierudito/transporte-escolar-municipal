@@ -1,4 +1,4 @@
-﻿using DM.TransporteEscolar.Application.ViewModels;
+﻿using DM.TransporteEscolar.Application.ViewModels.Responses;
 using System.Net;
 
 namespace DM.TransporteEscolar.bff.Extensions;

@@ -1,18 +1,13 @@
 ﻿using DM.TransporteEscolar.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DM.TransporteEscolar.Infra.Data.Mappings;
-public class RequestMap : IEntityTypeConfiguration<Request>
+public class TransportRequestMap : IEntityTypeConfiguration<TransportRequest>
 {
-    public void Configure(EntityTypeBuilder<Request> builder)
+    public void Configure(EntityTypeBuilder<TransportRequest> builder)
     {
-        builder.ToTable("Requests");
+        builder.ToTable("transport_requests");
 
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Date).IsRequired();
@@ -21,12 +16,12 @@ public class RequestMap : IEntityTypeConfiguration<Request>
         builder.Property(x => x.SchoolId).IsRequired();
 
         builder.HasOne(x => x.Student)
-            .WithMany(s => s.Requests)
+            .WithMany(s => s.TransportRequests)
             .HasForeignKey(x => x.StudentId)
             .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasOne(x => x.School)
-            .WithMany(s => s.Requests)
+            .WithMany(s => s.TransportRequests)
             .HasForeignKey(x => x.SchoolId)
             .OnDelete(DeleteBehavior.NoAction);
     }
