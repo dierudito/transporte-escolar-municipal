@@ -25,7 +25,7 @@ import {
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import api from '../services/api';
 
-function AdminRequestsTable() {
+function AdminTransportRequestsTable() {
   const [requests, setRequests] = useState([]);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
@@ -95,4 +95,4 @@ function AdminRequestsTable() {
   );
 }
 
-export default AdminRequestsTable;
+export default AdminTransportRequestsTable;

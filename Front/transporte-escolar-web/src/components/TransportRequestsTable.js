@@ -40,7 +40,7 @@ const formatDate = (dateString) => {
   return `${day}/${month}/${year}`;
 };
 
-function RequestsTable({ requests, page, rowsPerPage, onPageChange, onRowsPerPageChange, loading }) {
+function TransportRequestsTable({ requests, page, rowsPerPage, onPageChange, onRowsPerPageChange, loading }) {
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
 
@@ -74,7 +74,6 @@ function RequestsTable({ requests, page, rowsPerPage, onPageChange, onRowsPerPag
     return <Typography>Nenhuma solicitação encontrada.</Typography>;
   }
 
-  console.log(requests);
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, requests.totalRecords - page * rowsPerPage);
 
   return (
@@ -147,4 +146,4 @@ function RequestsTable({ requests, page, rowsPerPage, onPageChange, onRowsPerPag
   );
 }
 
-export default RequestsTable;
+export default TransportRequestsTable;

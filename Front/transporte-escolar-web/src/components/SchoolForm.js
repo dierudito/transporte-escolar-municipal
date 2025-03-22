@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import api from '../services/api';
 
-function RequestForm() {
+function SchoolForm() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
   const onSubmit = async (data) => {
@@ -31,7 +31,7 @@ function RequestForm() {
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
       <Typography variant="h6" gutterBottom>
-        Nova Solicitação de Transporte
+        Nova Escola
       </Typography>
       <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
         <Grid container spacing={2}>
@@ -70,4 +70,4 @@ function RequestForm() {
   );
 }
 
-export default RequestForm;
+export default SchoolForm;

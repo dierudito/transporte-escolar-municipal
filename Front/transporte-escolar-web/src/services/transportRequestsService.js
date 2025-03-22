@@ -1,6 +1,6 @@
 import api from './api';
 
-const getRequests = async (pageNumber, pageSize) => {
+const transportRequestsService = async (pageNumber, pageSize) => {
   try {
     const response = await api.get('/v1/transport-requests/list-detail', {
       params: {
@@ -18,4 +18,4 @@ const getRequests = async (pageNumber, pageSize) => {
   }
 };
 
-export default getRequests;
+export default transportRequestsService;

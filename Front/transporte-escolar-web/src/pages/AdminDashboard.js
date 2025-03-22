@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Typography, Grid, Paper } from '@mui/material';
 import api from '../services/api';
-import AdminRequestsTable from '../components/AdminRequestsTable'; // Importe o componente AdminRequestsTable
+import AdminTransportRequestsTable from '../components/AdminTransportRequestsTable'; // Importe o componente AdminTransportRequestsTable
 import UserManagement from '../components/UserManagement'; // Importe o componente UserManagement
 
 function AdminDashboard() {
@@ -67,7 +67,7 @@ function AdminDashboard() {
         <Grid item xs={12}>
         <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
             <Typography variant="h6" gutterBottom>Lista de Solicitações</Typography>
-            <AdminRequestsTable />
+            <AdminTransportRequestsTable />
         </Paper>
         </Grid>
 
