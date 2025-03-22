@@ -1,71 +1,160 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   TextField,
   Button,
   Container,
-  Typography,
   Box,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
+  CircularProgress,
   Grid,
+  Snackbar, 
+  Alert
 } from '@mui/material';
-import api from '../services/api';
+import schoolService from '../services/schoolService';
+import {formatPhoneNumber, formatCEP} from '../utils/utils';
 
-function SchoolForm() {
-  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+function SchoolForm({ onClose, onSchoolServiceCompletedAction, schoolToEdit }) {
+    const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm({
+      defaultValues: schoolToEdit || {}
+    });
+    const [loading, setLoading] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
+    useEffect(() => {
+      if (schoolToEdit) {
+        setValue('name', schoolToEdit.name);
+        setValue('address', schoolToEdit.address);
+        setValue('zipCode', formatCEP(schoolToEdit.zipCode));
+        setValue('phone', formatPhoneNumber(schoolToEdit.phone));
+      }
+    }, [schoolToEdit, setValue]);
 
   const onSubmit = async (data) => {
+    if (loading) return;
+
+    setLoading(true);
     try {
-      await api.post('/requests', data);
-      alert('Solicitação criada com sucesso!');
+      const zipCodeCleaned = data.zipCode.replace(/\D/g, '');
+      const phoneCleaned = data.phone.replace(/\D/g, '');
+      const schoolData = {
+        name: data.name,
+        address: data.address,
+        zipCode: zipCodeCleaned,
+        phone: phoneCleaned
+      };
+
+      let responseData;
+      if (schoolToEdit) {
+          responseData = await schoolService.update(schoolToEdit.id, schoolData);
+          setSnackbarMessage(responseData.message || 'Escola atualizada com sucesso!');
+          console.log('Escola atualizada:', responseData);
+      } else {
+          responseData = await schoolService.create(schoolData);
+          setSnackbarMessage(responseData.message || 'Escola cadastrada com sucesso!');
+          console.log('Escola cadastrada:', responseData);
+      }
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
       reset();
+      setTimeout(() => {
+      onSchoolServiceCompletedAction();
+      onClose();}, 1500);
     } catch (error) {
-      console.error('Erro ao criar solicitação:', error);
-      alert('Erro ao criar solicitação. Tente novamente.');
+      console.error('Erro ao alterar escola:', error);
+      setSnackbarMessage(error.message || 'Erro ao ' || (schoolToEdit ? 'atualizar' : 'criar') || ' escola.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
+
+  const handlePhoneChange = (e) => {
+    let inputValue = e.target.value.replace(/\D/g, '');
+    inputValue = inputValue.slice(0, 11);
+    setValue('phone', formatPhoneNumber(inputValue));
+  };
+
+  const handleZipCodeChange = (e) => {
+    let inputValue = e.target.value.replace(/\D/g, '');
+    inputValue = inputValue.slice(0, 8);
+    setValue('zipCode', formatCEP(inputValue));
   };
 
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
-      <Typography variant="h6" gutterBottom>
-        Nova Escola
-      </Typography>
       <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
-            <TextField label="Nome do Aluno" {...register('aluno', { required: true })} error={!!errors.aluno} helperText={errors.aluno && 'Nome do aluno é obrigatório.'} fullWidth margin="normal" />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField label="Data de Nascimento" type="date" {...register('dataNascimento', { required: true })} error={!!errors.dataNascimento} helperText={errors.dataNascimento && 'Data de nascimento é obrigatória.'} fullWidth margin="normal" InputLabelProps={{ shrink: true }} />
+            <TextField 
+              label="Nome" 
+              {...register('name', { required: 'Nome é obrigatório' })} 
+              error={!!errors.name}
+              helperText={errors.name?.message}              
+              margin="normal"
+              required
+              fullWidth
+              id="name"
+              name="name"
+              autoFocus/>
           </Grid>
           <Grid item xs={12}>
-            <TextField label="Endereço" {...register('endereco', { required: true })} error={!!errors.endereco} helperText={errors.endereco && 'Endereço é obrigatório.'} fullWidth margin="normal" />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="address"
+              label="Endereço"
+              name="address"
+              autoComplete="Endereço"
+              {...register('address', { required: 'Endereço é obrigatório' })}
+              error={!!errors.address}
+              helperText={errors.address?.message} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField label="CEP" {...register('cep', { required: true,
-                pattern: {
-                value: /^\d{5}-\d{3}$/,
-                message: 'CEP inválido.',
-                }, })} error={!!errors.cep} helperText={errors.cep && 'CEP é obrigatório.'} fullWidth margin="normal" />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="zipCode"
+              label="CEP"
+              name="zipCode"
+              {...register('zipCode', { required: 'CEP é obrigatório'})}
+              error={!!errors.zipCode}
+              helperText={errors.zipCode?.message}
+              onChange={handleZipCodeChange} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <FormControl fullWidth margin="normal">
-              <InputLabel id="escola-label">Escola</InputLabel>
-              <Select labelId="escola-label" id="escola" {...register('escola', { required: true })} error={!!errors.escola}>
-                <MenuItem value="Escola A">Escola A</MenuItem>
-                <MenuItem value="Escola B">Escola B</MenuItem>
-                <MenuItem value="Escola C">Escola C</MenuItem>
-              </Select>
-            </FormControl>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="phone"
+              label="Telefone"
+              name="phone"
+              {...register('phone', { required: 'Telefone é obrigatório' })}
+              error={!!errors.zipCode}
+              helperText={errors.zipCode?.message}
+              onChange={handlePhoneChange} />
           </Grid>
         </Grid>
         <Button type="submit" variant="contained" sx={{ mt: 3 }}>
-          Criar Solicitação
+          {loading 
+            ? (<CircularProgress size={24} color="inherit" />) 
+            : <></>} {schoolToEdit ? ' Atualizar' : ' Criar'}
         </Button>
       </Box>
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }

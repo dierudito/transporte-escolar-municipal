@@ -20,25 +20,7 @@ import {
   CircularProgress
 } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-
-const translateStatus = (status) => {
-  const translations = {
-    'pending': 'Pendente',
-    'approved': 'Aprovado',
-    'rejected': 'Rejeitado',
-    'canceled': 'Cancelado'
-  };
-  return translations[status.toLowerCase()] || status;
-};
-
-const formatDate = (dateString) => {
-  if (!dateString) return '';
-  const date = new Date(dateString);
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
-};
+import { translateStatus, formatDate } from '../utils/utils';
 
 function TransportRequestsTable({ requests, page, rowsPerPage, onPageChange, onRowsPerPageChange, loading }) {
   const [selectedRequest, setSelectedRequest] = useState(null);

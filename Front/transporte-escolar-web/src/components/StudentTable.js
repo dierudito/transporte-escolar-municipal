@@ -22,15 +22,15 @@ import {
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { formatCEP, formatPhoneNumber } from '../utils/utils';
+import {formatDate, formatCEP} from '../utils/utils';
 
-function SchoolTable({ requests, loading, onEdit, onDelete }) {
-  const [selectedSchool, setSelectedSchool] = useState(null);
+function StudentTable({ requests, loading, onEdit, onDelete }) {
+  const [selectedStudent, setSelectedStudent] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [hoveredRow, setHoveredRow] = useState(null);
 
   const handleOpenDialog = (request) => {
-    setSelectedSchool(request);
+    setSelectedStudent(request);
     setOpenDialog(true);
   };
 
@@ -42,13 +42,13 @@ function SchoolTable({ requests, loading, onEdit, onDelete }) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height={200}>
         <CircularProgress />
-        <Typography sx={{ ml: 2 }}>Carregando escolas...</Typography>
+        <Typography sx={{ ml: 2 }}>Carregando alunos...</Typography>
       </Box>
     );
   }
 
   if (!requests || requests.length === 0) {
-    return <Typography>Nenhuma escola encontrada.</Typography>;
+    return <Typography>Nenhum aluno encontrado.</Typography>;
   }
 
   return (
@@ -59,13 +59,11 @@ function SchoolTable({ requests, loading, onEdit, onDelete }) {
             <TableRow>
               <TableCell>Nome</TableCell>
               <TableCell>Endereço</TableCell>
-              <TableCell align="center">Detalhes</TableCell>
+              <TableCell align="right">Detalhes</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {requests
-              .data
-              .map((request) => (
+            {requests.map((request) => (
               <TableRow 
                 key={request.id}
                 onMouseEnter={() => setHoveredRow(request.id)}
@@ -107,26 +105,26 @@ function SchoolTable({ requests, loading, onEdit, onDelete }) {
           </TableBody>
         </Table>
       </TableContainer>
-
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>Detalhes da Escola</DialogTitle>
-        <DialogContent>
-          {selectedSchool && (
-            <DialogContentText>
-              <Typography>Nome: {selectedSchool.name}</Typography>
-              <Typography>Endereço: {selectedSchool.address}</Typography>
-              <Typography>CEP: {formatCEP(selectedSchool.zipCode)}</Typography>
-              <Typography>Telefone: {formatPhoneNumber(selectedSchool.phone)}</Typography>
-              {/* Adicione outros detalhes aqui */}
-            </DialogContentText>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog}>Fechar</Button>
-        </DialogActions>
-      </Dialog>
+      
+        <Dialog open={openDialog} onClose={handleCloseDialog}>
+            <DialogTitle>Detalhes do Aluno</DialogTitle>
+            <DialogContent>
+            {selectedStudent && (
+                <DialogContentText>
+                <Typography>Nome: {selectedStudent.name}</Typography>
+                <Typography>Endereço: {selectedStudent.address}</Typography>
+                <Typography>CEP: {formatCEP(selectedStudent.zipCode)}</Typography>
+                <Typography>Nascimento: {formatDate(selectedStudent.phone)}</Typography>
+                {/* Adicione outros detalhes aqui */}
+                </DialogContentText>
+            )}
+            </DialogContent>
+            <DialogActions>
+            <Button onClick={handleCloseDialog}>Fechar</Button>
+            </DialogActions>
+        </Dialog>
     </>
   );
 }
 
-export default SchoolTable;
+export default StudentTable;
