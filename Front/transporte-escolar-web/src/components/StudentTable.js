@@ -22,9 +22,10 @@ import {
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {formatDate, formatCEP} from '../utils/utils';
+import {fomartDatePtBr, formatCEP, formatCPF} from '../utils/utils';
 
 function StudentTable({ requests, loading, onEdit, onDelete }) {
+  console.log('StudentTable:', requests);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [hoveredRow, setHoveredRow] = useState(null);
@@ -63,7 +64,7 @@ function StudentTable({ requests, loading, onEdit, onDelete }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {requests.map((request) => (
+            {requests.data.map((request) => (
               <TableRow 
                 key={request.id}
                 onMouseEnter={() => setHoveredRow(request.id)}
@@ -114,7 +115,8 @@ function StudentTable({ requests, loading, onEdit, onDelete }) {
                 <Typography>Nome: {selectedStudent.name}</Typography>
                 <Typography>Endereço: {selectedStudent.address}</Typography>
                 <Typography>CEP: {formatCEP(selectedStudent.zipCode)}</Typography>
-                <Typography>Nascimento: {formatDate(selectedStudent.phone)}</Typography>
+                <Typography>Nascimento: {fomartDatePtBr(selectedStudent.birthDate)}</Typography>
+                <Typography>CPF: {formatCPF(selectedStudent.cpf)}</Typography>
                 {/* Adicione outros detalhes aqui */}
                 </DialogContentText>
             )}

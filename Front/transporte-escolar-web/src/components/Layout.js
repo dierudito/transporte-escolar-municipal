@@ -12,7 +12,7 @@ const translateStatus = (status) => {
     return translations[status.toLowerCase()] || status;
   };
   
-  const formatDate = (dateString) => {
+  const fomartDatePtBr = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, '0');

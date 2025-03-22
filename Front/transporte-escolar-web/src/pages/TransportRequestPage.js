@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
+import {
   Container, 
   Typography,
   Button,
@@ -11,17 +11,19 @@ import {
   Alert,
   CircularProgress
 } from '@mui/material';
+import TransportRequestTable from '../components/TransportRequestTable';
+import TransportRequestForm from '../components/TransportRequestForm';
+import transportRequestService from '../services/transportRequestService'; 
 import Layout from '../components/Layout';
-import SchoolForm from '../components/SchoolForm';
-import SchoolTable from '../components/SchoolTable';
-import schoolService from '../services/schoolService';
 
-function SchoolPage() {
+function TransportRequestPage() {
   const [requests, setRequests] = useState([]);
   const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
-  const [selectedSchoolToEdit, setSelectedSchoolToEdit] = useState(null);
+  const [selectedRequestToEdit, setSelectedRequestToEdit] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
@@ -34,83 +36,94 @@ function SchoolPage() {
 
   const handleCloseModal = () => {
     setOpenModal(false);
-    setSelectedSchoolToEdit(null);
+    setSelectedRequestToEdit(null);
   };
 
-  const fetchRequests = async () => {
+  const fetchRequests = async (currentPage, rows) => {
     setLoading(true);
     try {
-      const data = await schoolService.getAll();
-      console.log(data);
+      const data = await transportRequestService.getAllPaged(currentPage, rows);
       setRequests(data);
     } catch (err) {
-      setError('Erro ao buscar escolas. Tente novamente mais tarde.');
+      setError('Erro ao buscar solicitações. Tente novamente mais tarde.');
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
-  const onSchoolServiceCompletedAction = () => {
+  const onRequestServiceCompletedAction = () => {
       fetchRequests();
   };
 
-  const handleEdit = (school) => {
-      console.log(school);
-      setSelectedSchoolToEdit(school);
+  const handleEdit = (request) => {
+      setSelectedRequestToEdit(request);
       setOpenModal(true);
   };
 
-  const handleDelete = (school) => {
-    setConfirmDelete(school.id);
-};
+  const handleDelete = (request) => {
+    setConfirmDelete(request.id);
+  };
 
-  const handleConfirmDelete  = async (schoolId) => {
+  const handleConfirmDelete = async (resquestId) => {
     setDeleteLoading(true);
     try {
-      await schoolService.delete(schoolId);
-      setSnackbarMessage('Escola excluída com sucesso.');
+      await transportRequestService.delete(resquestId);
+      setSnackbarMessage('Solicitação excluída com sucesso');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
       fetchRequests();
     } catch (err) {
-      setSnackbarMessage('Erro ao excluir escola. Tente novamente mais tarde.');
+      setSnackbarMessage('Erro ao excluir solicitação. Tente novamente mais tarde.');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
       console.error(err);
     } finally {
-      setConfirmDelete(null);
       setDeleteLoading(false);
+      setConfirmDelete(null);
     }
   };
 
   const handleCancelDelete = () => {
       setConfirmDelete(null);
-  }
+  };
 
   const handleCloseSnackbar = () => {
-      setSnackbarOpen(false);
+    setSnackbarOpen(false);
   };
 
   useEffect(() => {
-    fetchRequests();
-  }, []);
+    fetchRequests(page, rowsPerPage);
+  }, [page, rowsPerPage]);
+
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
+
+  const handleRowsPerPageChange = (newRowsPerPage) => {
+    setRowsPerPage(newRowsPerPage);
+    setPage(1);
+  };
 
   return (    
     <Layout>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-          Escola
+          Solicitações de Transporte
         </Typography>
         <Button 
           variant="contained" 
           onClick={handleOpenModal} 
           sx={{ mb: 2 }}>
-          Nova Escola
+          Solicitar transporte
         </Button>
         {error && <Typography color="error">{error}</Typography>}
-        <SchoolTable
+        <TransportRequestTable
           requests={requests}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          onPageChange={handlePageChange}
+          onRowsPerPageChange={handleRowsPerPageChange}
           loading={loading}
           onEdit={handleEdit}
           onDelete={handleDelete} />
@@ -120,16 +133,16 @@ function SchoolPage() {
           fullWidth maxWidth="md">
           <DialogTitle>Nova Escola</DialogTitle>
           <DialogContent>
-            <SchoolForm 
+            <TransportRequestForm 
               onClose={handleCloseModal} 
-              onSchoolServiceCompletedAction={onSchoolServiceCompletedAction}
-              schoolToEdit={selectedSchoolToEdit} />
+              onRequestServiceCompletedAction={onRequestServiceCompletedAction}
+              requestToEdit={selectedRequestToEdit} />
           </DialogContent>
         </Dialog>
         <Dialog open={confirmDelete !== null} onClose={handleCancelDelete}>
             <DialogTitle>Confirmar Exclusão</DialogTitle>
             <DialogContent>
-                <Typography>Tem certeza que deseja excluir esta escola?</Typography>
+                <Typography>Tem certeza que deseja excluir esta solicitação?</Typography>
             </DialogContent>
             <DialogActions>
                 <Button 
@@ -155,4 +168,4 @@ function SchoolPage() {
   );
 }
 
-export default SchoolPage;
+export default TransportRequestPage;

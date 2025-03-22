@@ -63,7 +63,8 @@ function SchoolForm({ onClose, onSchoolServiceCompletedAction, schoolToEdit }) {
       onClose();}, 1500);
     } catch (error) {
       console.error('Erro ao alterar escola:', error);
-      setSnackbarMessage(error.message || 'Erro ao ' || (schoolToEdit ? 'atualizar' : 'criar') || ' escola.');
+      setSnackbarMessage(
+        error.message || 'Erro ao ' || (schoolToEdit ? 'atualizar' : 'criar') || ' escola.');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
     } finally {
