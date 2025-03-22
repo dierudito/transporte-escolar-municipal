@@ -14,4 +14,7 @@ public interface ITransportRequestAppService
     Task<Response<TransportRequestResponseViewModel>> GetByIdAsync(Guid id);
 
     Task<Response<List<TransportRequestResponseViewModel>>> GetAllAsync();
+
+    Task<Response<PagedResponseViewModel<TransportRequestDetailResponseViewModel>>> 
+        GetPagedDetailAsync(GetTransportRequetsDetailRequestViewModel request);
 }

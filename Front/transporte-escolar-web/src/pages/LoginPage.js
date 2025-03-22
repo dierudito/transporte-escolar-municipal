@@ -1,19 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Container, Typography, TextField, Button, Box, FormHelperText } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { 
+  Container,
+  Typography,
+  TextField,
+  Button,
+  Box,
+  FormHelperText,
+  Stack,
+  CircularProgress } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
+import userService from '../services/userService';
 
 function LoginPage() {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+    },});
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [loginError, setLoginError] = useState('');
 
   const handleClick = () => {
     navigate('/user/dashboard');
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
-    // Aqui você faria a chamada para a API de login
+    setLoading(true);
+    setLoginError('');
+    try {
+      const responseData = await userService.login(data);
+      console.log('Login bem-sucedido:', responseData);
+
+      localStorage.setItem('token', responseData.token);
+      localStorage.setItem('user', JSON.stringify(responseData.user));
+      
+      navigate('/user/dashboard');
+    } catch (error) {
+      console.error('Erro de login:', error);
+      setLoginError(error.message || 'Credenciais inválidas. Por favor, tente novamente.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -40,6 +70,7 @@ function LoginPage() {
           })}
           error={!!errors.email}
           helperText={errors.email?.message}
+          disabled={loading}
         />
         <TextField
           margin="normal"
@@ -53,10 +84,24 @@ function LoginPage() {
           {...register('password', { required: 'Senha é obrigatória' })}
           error={!!errors.password}
           helperText={errors.password?.message}
+          disabled={loading}
         />
-        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} onClick={handleClick}>
-          Entrar
-        </Button>
+        <FormHelperText error={!!loginError}>
+          {loginError}
+        </FormHelperText>
+        <Stack spacing={2} direction="row">
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} onClick={handleClick}>
+            {loading ? (
+                <CircularProgress size={24} color="inherit" />
+              ) : (
+                'Entrar'
+              )}
+          </Button>
+          <Button variant="outlined" component={Link} to="/register"
+          disabled={loading}>
+            Cadastar
+          </Button>
+        </Stack>        
       </Box>
     </Container>
   );

@@ -17,5 +17,11 @@ public class TransportRequestMap : Profile
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => (StatusRequestViewModel)src.Status));
 
         CreateMap<StatusRequest, StatusRequestViewModel>().ReverseMap();
+        
+        CreateMap<TransportRequest, TransportRequestDetailResponseViewModel>()
+            .ForMember(dest => dest.StatusRequest, opt => opt.MapFrom(src => src.Status.ToString()))
+            .ForMember(dest => dest.StudentName, opt => opt.MapFrom(src => src.Student.Name))
+            .ForMember(dest => dest.SchoolName, opt => opt.MapFrom(src => src.School.Name))
+            .ForMember(dest => dest.RequestDate, opt => opt.MapFrom(src => src.Date));
     }
 }

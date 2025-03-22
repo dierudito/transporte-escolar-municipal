@@ -1,13 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Container, Typography, TextField, Button, Box } from '@mui/material';
+import { 
+  Container,
+  Typography,
+  TextField,
+  Button,
+  Box,
+  CircularProgress,
+  Snackbar, 
+  Alert,
+  Stack
+ } from '@mui/material';
+import userService from '../services/userService';
+import { Link, useNavigate } from 'react-router-dom';
 
 function RegisterPage() {
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const [loading, setLoading] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    setLoading(true);
     console.log(data);
-    // Aqui você faria a chamada para a API de cadastro
+    try {
+      const newUser = {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        userType: 1
+      };
+      const responseData = await userService.register(newUser);
+      console.log('Usuário cadastrado:', responseData);
+      setSnackbarMessage('Usuário cadastrado com sucesso! Por favor, faça login.');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
+      setTimeout(() => {
+        navigate('/login');
+      }, 1500);
+    } catch (error) {
+      console.error('Erro ao cadastrar usuário:', error);
+      setSnackbarMessage(error.message || 'Erro ao cadastrar usuário. Verifique o console para mais informações.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
   };
 
   return (
@@ -59,10 +103,24 @@ function RegisterPage() {
           error={!!errors.password}
           helperText={errors.password?.message}
         />
-        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-          Cadastrar
-        </Button>
+        <Stack spacing={2} direction="row">
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+            {loading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              'Cadastrar'
+            )}
+          </Button>
+          <Button variant="outlined" component={Link} to="/login">
+            Login
+          </Button>
+        </Stack>
       </Box>
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }

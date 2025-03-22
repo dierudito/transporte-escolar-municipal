@@ -1,4 +1,5 @@
-﻿using DM.TransporteEscolar.bff.Endpoints.Schools;
+﻿using DM.TransporteEscolar.bff.Endpoints.Auth;
+using DM.TransporteEscolar.bff.Endpoints.Schools;
 using DM.TransporteEscolar.bff.Endpoints.Students;
 using DM.TransporteEscolar.bff.Endpoints.TransportRequests;
 using DM.TransporteEscolar.bff.Endpoints.Users;
@@ -39,7 +40,8 @@ public static class Endpoint
             .MapEndpoint<UpdateTransportRequestEndpoint>()
             .MapEndpoint<DeleteTransportRequestEndpoint>()
             .MapEndpoint<GetAllTransportRequestsEndpoint>()
-            .MapEndpoint<GetTransportRequestByIdEndpoint>();
+            .MapEndpoint<GetTransportRequestByIdEndpoint>()
+            .MapEndpoint<GetDetailTransportRequestsPagesEndpoint>();
 
         endpoints.MapGroup($"v1/{ApiConfigurations.RouterUser}")
             .WithTags("Users")
@@ -48,6 +50,10 @@ public static class Endpoint
             .MapEndpoint<DeleteUserEndpoint>()
             .MapEndpoint<GetAllUsersEndpoint>()
             .MapEndpoint<GetUserByIdEndpoint>();
+
+        endpoints.MapGroup($"v1/{ApiConfigurations.RouterAuth}")
+            .WithTags("Auth")
+            .MapEndpoint<AuthEndpoint>();
     }
 
     private static IEndpointRouteBuilder MapEndpoint<TEndpoint>(this IEndpointRouteBuilder app)

@@ -16,14 +16,33 @@ import {
   DialogActions,
   Button,
   TablePagination,
+  Box,
+  CircularProgress
 } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
-function RequestsTable({ requests }) {
+const translateStatus = (status) => {
+  const translations = {
+    'pending': 'Pendente',
+    'approved': 'Aprovado',
+    'rejected': 'Rejeitado',
+    'canceled': 'Cancelado'
+  };
+  return translations[status.toLowerCase()] || status;
+};
+
+const formatDate = (dateString) => {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+};
+
+function RequestsTable({ requests, page, rowsPerPage, onPageChange, onRowsPerPageChange, loading }) {
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleOpenDialog = (request) => {
     setSelectedRequest(request);
@@ -35,19 +54,28 @@ function RequestsTable({ requests }) {
   };
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+    onPageChange(newPage + 1);
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    onRowsPerPageChange(parseInt(event.target.value, 10));
   };
+
+  if (loading) { 
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height={200}>
+        <CircularProgress />
+        <Typography sx={{ ml: 2 }}>Carregando solicitações...</Typography>
+      </Box>
+    );
+  }
 
   if (!requests || requests.length === 0) {
     return <Typography>Nenhuma solicitação encontrada.</Typography>;
   }
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, requests.length - page * rowsPerPage);
+  console.log(requests);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, requests.totalRecords - page * rowsPerPage);
 
   return (
     <>
@@ -64,15 +92,15 @@ function RequestsTable({ requests }) {
           </TableHead>
           <TableBody>
             {requests
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .data.data
               .map((request) => (
               <TableRow key={request.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell component="th" scope="row">
-                  {request.aluno}
+                  {request.studentName}
                 </TableCell>
-                <TableCell align="right">{request.escola}</TableCell>
-                <TableCell align="right">{request.status}</TableCell>
-                <TableCell align="right">{request.data}</TableCell>
+                <TableCell align="right">{request.schoolName}</TableCell>
+                <TableCell align="right">{translateStatus(request.statusRequest)}</TableCell>
+                <TableCell align="right">{formatDate(request.requestDate)}</TableCell>
                 <TableCell align="right">
                   <IconButton onClick={() => handleOpenDialog(request)}>
                     <VisibilityIcon />
@@ -90,9 +118,9 @@ function RequestsTable({ requests }) {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={requests.length}
+          count={requests.data.totalRecords}
           rowsPerPage={rowsPerPage}
-          page={page}
+          page={page - 1}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
@@ -103,10 +131,10 @@ function RequestsTable({ requests }) {
         <DialogContent>
           {selectedRequest && (
             <DialogContentText>
-              <Typography>Aluno: {selectedRequest.aluno}</Typography>
-              <Typography>Escola: {selectedRequest.escola}</Typography>
-              <Typography>Status: {selectedRequest.status}</Typography>
-              <Typography>Data: {selectedRequest.data}</Typography>
+              <Typography>Aluno: {selectedRequest.studentName}</Typography>
+              <Typography>Escola: {selectedRequest.schoolName}</Typography>
+              <Typography>Status: {translateStatus(selectedRequest.statusRequest)}</Typography>
+              <Typography>Data: {formatDate(selectedRequest.requestDate)}</Typography>
               {/* Adicione outros detalhes aqui */}
             </DialogContentText>
           )}

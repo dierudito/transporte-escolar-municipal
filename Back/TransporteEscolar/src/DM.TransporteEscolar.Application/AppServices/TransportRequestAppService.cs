@@ -173,4 +173,34 @@ public class TransportRequestAppService(IMapper mapper, ITransportRequestService
             };
         }
     }
+
+    public async Task<Response<PagedResponseViewModel<TransportRequestDetailResponseViewModel>>> 
+        GetPagedDetailAsync(GetTransportRequetsDetailRequestViewModel request)
+    {
+        try
+        {
+            var entityPagedDto = 
+                await repository.GetPagedDetailAsync(request.PageNumber, request.PageSize);
+            var transportRequests = 
+                mapper.Map<List<TransportRequestDetailResponseViewModel>>(entityPagedDto.Data);
+
+            return new Response<PagedResponseViewModel<TransportRequestDetailResponseViewModel>>
+            {
+                Data = new (entityPagedDto.PageNumber,
+                            entityPagedDto.PageSize,
+                            entityPagedDto.TotalPages,
+                            entityPagedDto.TotalRecords,
+                            transportRequests),
+                Message = "Solicitações de transportes listadas com sucesso"
+            };
+        }
+        catch (Exception e)
+        {
+            return new Response<PagedResponseViewModel<TransportRequestDetailResponseViewModel>>
+            {
+                Code = HttpStatusCode.InternalServerError,
+                Message = e.Message
+            };
+        }
+    }
 }

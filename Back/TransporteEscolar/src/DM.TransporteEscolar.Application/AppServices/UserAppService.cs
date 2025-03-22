@@ -173,4 +173,45 @@ public class UserAppService(IMapper mapper, IUserService service, IUserRepositor
             };
         }
     }
+
+    public async Task<Response<LoginResponseViewModel>> LoginAsync(LoginRequestViewModel login)
+    {
+        try
+        {
+            var user = await repository.GetUserByEmailAsync(login.Email);
+            if (user is null)
+            {
+                return new Response<LoginResponseViewModel>
+                {
+                    Code = HttpStatusCode.Unauthorized,
+                    Message = "Usuário ou senha inválidos"
+                };
+            }
+
+            if (user.Password != login.Password)
+            {
+                return new Response<LoginResponseViewModel>
+                {
+                    Code = HttpStatusCode.Unauthorized,
+                    Message = "Usuário ou senha inválidos"
+                };
+            }
+
+            var userResponse = mapper.Map<UserResponseViewModel>(user);
+
+            return new Response<LoginResponseViewModel>
+            {
+                Data = new("90708034-9a62-4d0d-8988-5e15a9638bca", userResponse),
+                Message = "Usuário logado com sucesso"
+            };
+        }
+        catch (Exception e)
+        {
+            return new Response<LoginResponseViewModel>
+            {
+                Code = HttpStatusCode.InternalServerError,
+                Message = e.Message
+            };
+        }
+    }
 }

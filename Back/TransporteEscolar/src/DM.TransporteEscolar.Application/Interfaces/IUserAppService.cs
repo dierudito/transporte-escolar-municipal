@@ -13,4 +13,6 @@ public interface IUserAppService
     Task<Response<UserResponseViewModel>> GetByIdAsync(Guid id);
 
     Task<Response<List<UserResponseViewModel>>> GetAllAsync();
+
+    Task<Response<LoginResponseViewModel>> LoginAsync(LoginRequestViewModel login);
 }

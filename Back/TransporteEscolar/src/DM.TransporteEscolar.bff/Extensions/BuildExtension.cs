@@ -10,6 +10,8 @@ public static class BuildExtension
             builder.Configuration.GetConnectionString("TransporteEscolarDbPostgres") ?? string.Empty;
         ApiConfigurations.BackendUrl =
             builder.Configuration.GetValue<string>("Config:Cors:BackendUrl") ?? string.Empty;
+        ApiConfigurations.FrontendUrl =
+            builder.Configuration.GetValue<string>("Config:Cors:FrontendUrl") ?? string.Empty;
         ApiConfigurations.CorsPolicyName =
             builder.Configuration.GetValue<string>("Config:Cors:Name") ?? string.Empty;
     }
