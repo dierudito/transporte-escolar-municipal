@@ -20,7 +20,6 @@ import userService from "../services/userService";
 
 function StudentPage() {
     const [requests, setRequests] = useState([]);
-    const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const [openModal, setOpenModal] = useState(false);
     const [selectedStudentToEdit, setSelectedStudentToEdit] = useState(null);
@@ -45,7 +44,9 @@ function StudentPage() {
             const response = await studentService.getAll();
             setRequests(response);
         } catch (error) {
-            setError('Erro ao buscar alunos.');
+            setSnackbarSeverity('error');
+            setSnackbarMessage('Erro ao buscar alunos.');
+            setSnackbarOpen(true);
             console.error('Erro ao buscar alunos:', error);
         } finally {
             setLoading(false);
@@ -57,7 +58,9 @@ function StudentPage() {
             const response = await userService.getAll();
             setUsers(response);
         } catch (error) {
-            setError('Erro ao buscar usuários.');
+            setSnackbarSeverity('error');
+            setSnackbarMessage('Erro ao buscar usuários.');
+            setSnackbarOpen(true);
             console.error('Erro ao buscar usuários:', error);
         }
     };
@@ -67,7 +70,6 @@ function StudentPage() {
     };
 
     const handleEdit = (student) => {
-        console.log('handleEdit:', student);
         setSelectedStudentToEdit(student);
         handleOpenModal();
     };
@@ -126,7 +128,7 @@ function StudentPage() {
               open={openModal} 
               onClose={handleCloseModal} 
               fullWidth maxWidth="md">
-              <DialogTitle>Novo Aluno</DialogTitle>
+              <DialogTitle>Aluno</DialogTitle>
               <DialogContent>
                 <StudentForm 
                   onClose={handleCloseModal} 

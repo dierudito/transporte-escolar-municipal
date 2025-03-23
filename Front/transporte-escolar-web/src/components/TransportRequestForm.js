@@ -1,71 +1,154 @@
-import React from 'react';
+import { useEffect, useState } from "react";
 import { useForm } from 'react-hook-form';
+import transportRequestService from '../services/transportRequestService';
 import {
-  TextField,
   Button,
   Container,
-  Typography,
   Box,
   Select,
   MenuItem,
   FormControl,
   InputLabel,
   Grid,
+  CircularProgress,
+  Snackbar,
+  Alert
 } from '@mui/material';
-import api from '../services/api';
 
-function TransportRequestForm() {
-  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+function TransportRequestForm({ onClose, onRequestServiceCompletedAction, requestToEdit, students, schools }) {
+  const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm({
+    defaultValues: requestToEdit || {}
+  });
+  const [loading, setLoading] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  const [selectedStudent, setSelectedStudent] = useState(requestToEdit ? requestToEdit.studentId : '');
+  const [selectedSchool, setSelectedSchool] = useState(requestToEdit ? requestToEdit.schoolId : '');
+
+  useEffect(() => {
+    if (requestToEdit) {
+      setValue('studentId', requestToEdit.studentId);
+      setValue('schoolId', requestToEdit.schoolId);
+      setSelectedStudent(requestToEdit.studentId);
+      setSelectedSchool(requestToEdit.schoolId);
+    } else {
+      setSelectedStudent('');
+      setSelectedSchool('');
+    }
+  }, [requestToEdit, setValue]);
 
   const onSubmit = async (data) => {
+    if (loading) return;
+    setLoading(true);
+
     try {
-      await api.post('/requests', data);
-      alert('Solicitação criada com sucesso!');
+      const requestData = {
+        studentId: data.studentId,
+        schoolId: data.schoolId
+      };
+
+      let responseData;
+      if (requestToEdit) {
+        responseData = await transportRequestService.update(requestToEdit.id, requestData);
+        setSnackbarMessage(responseData.message || 'Solicitação atualizada com sucesso.');
+      } else {
+        responseData = await transportRequestService.create(requestData);
+        setSnackbarMessage(responseData.message || 'Solicitação criada com sucesso.');
+      }
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
       reset();
+      setTimeout(() => {
+        onRequestServiceCompletedAction();
+        onClose();
+      }, 2000);      
     } catch (error) {
-      console.error('Erro ao criar solicitação:', error);
-      alert('Erro ao criar solicitação. Tente novamente.');
+      setSnackbarMessage('Erro ao salvar solicitação.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);      
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
+
+  const handleSchoolChange = (e) => {
+      setSelectedSchool(e.target.value);
+      setValue('schoolId', e.target.value);
+  };
+
+  const handleStudentChange = (e) => {
+      setSelectedStudent(e.target.value);
+      setValue('studentId', e.target.value);
   };
 
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
-      <Typography variant="h6" gutterBottom>
-        Nova Solicitação de Transporte
-      </Typography>
       <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <TextField label="Nome do Aluno" {...register('aluno', { required: true })} error={!!errors.aluno} helperText={errors.aluno && 'Nome do aluno é obrigatório.'} fullWidth margin="normal" />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField label="Data de Nascimento" type="date" {...register('dataNascimento', { required: true })} error={!!errors.dataNascimento} helperText={errors.dataNascimento && 'Data de nascimento é obrigatória.'} fullWidth margin="normal" InputLabelProps={{ shrink: true }} />
+          <Grid item xs={12}>
+              <FormControl fullWidth>
+                  <InputLabel id="student-select-label">Aluno</InputLabel>
+                  <Select
+                      labelId="student-select-label"
+                      {...register('studentId', { required: 'Aluno é obrigatório' })}
+                      value={selectedStudent}
+                      onChange={handleStudentChange}
+                      error={!!errors.studentId}
+                      helperText={errors.studentId?.message}
+                      margin="normal"
+                      id="student-select"
+                      name="student-select"
+                      label="Aluno">                                    
+                          {!requestToEdit && <MenuItem value="">Selecione...</MenuItem>}
+                          {students && students.data && students.data.map((student) => (
+                              <MenuItem key={student.id} value={student.id}>{student.name}</MenuItem>
+                          ))}
+                  </Select>
+              </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <TextField label="Endereço" {...register('endereco', { required: true })} error={!!errors.endereco} helperText={errors.endereco && 'Endereço é obrigatório.'} fullWidth margin="normal" />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField label="CEP" {...register('cep', { required: true,
-                pattern: {
-                value: /^\d{5}-\d{3}$/,
-                message: 'CEP inválido.',
-                }, })} error={!!errors.cep} helperText={errors.cep && 'CEP é obrigatório.'} fullWidth margin="normal" />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <FormControl fullWidth margin="normal">
-              <InputLabel id="escola-label">Escola</InputLabel>
-              <Select labelId="escola-label" id="escola" {...register('escola', { required: true })} error={!!errors.escola}>
-                <MenuItem value="Escola A">Escola A</MenuItem>
-                <MenuItem value="Escola B">Escola B</MenuItem>
-                <MenuItem value="Escola C">Escola C</MenuItem>
-              </Select>
-            </FormControl>
+              <FormControl fullWidth>
+                  <InputLabel id="school-select-label">Escola</InputLabel>
+                  <Select
+                      labelId="school-select-label"
+                      {...register('schoolId', { required: 'Escola é obrigatório' })}
+                      value={selectedSchool}
+                      onChange={handleSchoolChange}
+                      error={!!errors.schoolId}
+                      helperText={errors.schoolId?.message}
+                      margin="normal"
+                      id="school-select"
+                      name="school-select"
+                      label="Escola">                                    
+                          {!requestToEdit && <MenuItem value="">Selecione...</MenuItem>}
+                          {schools && schools.data && schools.data.map((school) => (
+                              <MenuItem key={school.id} value={school.id}>{school.name}</MenuItem>
+                          ))}
+                  </Select>
+              </FormControl>
           </Grid>
         </Grid>
         <Button type="submit" variant="contained" sx={{ mt: 3 }}>
-          Criar Solicitação
+          {loading ? (<CircularProgress size={24} color="inherit" />) 
+                   : <></>} {requestToEdit ? ' Atualizar' : ' Criar'}
         </Button>
       </Box>
+      <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleCloseSnackbar}>
+              <Alert
+                  onClose={handleCloseSnackbar}
+                  severity={snackbarSeverity}
+                  sx={{ width: '100%' }}>
+                      {snackbarMessage}
+              </Alert>
+      </Snackbar>
     </Container>
   );
 }

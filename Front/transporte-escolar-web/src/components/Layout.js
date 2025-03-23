@@ -1,28 +1,30 @@
-import React from 'react';
-import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
+import React, { useState } from 'react';
+import { 
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  IconButton } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
-
-const translateStatus = (status) => {
-    const translations = {
-      'pending': 'Pendente',
-      'approved': 'Aprovado',
-      'rejected': 'Rejeitado',
-      'canceled': 'Cancelado'
-    };
-    return translations[status.toLowerCase()] || status;
-  };
-  
-  const fomartDatePtBr = (dateString) => {
-    if (!dateString) return '';
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-  };
+import LoginPage from '../pages/LoginPage';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 
 const Layout = ({ children }) => {
-    const location = useLocation();
+  const location = useLocation();
+  const [openLoginModal, setOpenLoginModal] = useState(false);
+
+  const handleOpenLoginModal = () => {
+    setOpenLoginModal(true);
+  };
+
+  const handleCloseLoginModal = () => {
+      setOpenLoginModal(false);
+  };
   return (
     <div>
       <AppBar position="static">
@@ -49,7 +51,10 @@ const Layout = ({ children }) => {
             color={location.pathname === '/transport-request' ? 'inherit' : 'default'}
             component={Link} to="/transport-request">
             Solicitações
-          </Button>
+          </Button>          
+          <IconButton color="inherit" onClick={handleOpenLoginModal}>
+                        <AccountCircle /> 
+                    </IconButton>
         </Toolbar>
       </AppBar>
 
@@ -64,6 +69,18 @@ const Layout = ({ children }) => {
           © {new Date().getFullYear()} Sistema de Transporte Escolar. Todos os direitos reservados.
         </Typography>
       </footer>
+
+      <Dialog open={openLoginModal} onClose={handleCloseLoginModal}>
+          <DialogTitle>Login</DialogTitle>
+          <DialogContent>
+              <LoginPage />
+          </DialogContent>
+          <DialogActions>
+              <Button onClick={handleCloseLoginModal} color="primary">
+                  Fechar
+              </Button>
+          </DialogActions>
+      </Dialog>
     </div>
   );
 };

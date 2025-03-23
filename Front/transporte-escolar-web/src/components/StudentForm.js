@@ -49,7 +49,6 @@ function StudentForm({ onClose, onStudentServiceCompletedAction, studentToEdit, 
         try {
             const zipCodeCleaned = data.zipCode.replace(/\D/g, '');
             const cpfCleaned = data.cpf.replace(/\D/g, '');
-            console.log('data:', data);
 
             const student = {
                 name: data.name,

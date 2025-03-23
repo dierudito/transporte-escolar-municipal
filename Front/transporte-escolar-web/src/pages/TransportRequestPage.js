@@ -15,10 +15,11 @@ import TransportRequestTable from '../components/TransportRequestTable';
 import TransportRequestForm from '../components/TransportRequestForm';
 import transportRequestService from '../services/transportRequestService'; 
 import Layout from '../components/Layout';
+import schoolService from '../services/schoolService';
+import studentService from '../services/studentService';
 
 function TransportRequestPage() {
   const [requests, setRequests] = useState([]);
-  const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [loading, setLoading] = useState(true);
@@ -29,6 +30,8 @@ function TransportRequestPage() {
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
   const [confirmDelete, setConfirmDelete] = useState(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [students, setStudents] = useState([]);
+  const [schools, setSchools] = useState([]);
   
   const handleOpenModal = () => {
     setOpenModal(true);
@@ -45,15 +48,44 @@ function TransportRequestPage() {
       const data = await transportRequestService.getAllPaged(currentPage, rows);
       setRequests(data);
     } catch (err) {
-      setError('Erro ao buscar solicitações. Tente novamente mais tarde.');
+      setSnackbarSeverity('error');
+      setSnackbarMessage('Erro ao buscar solicitações.');
+      setSnackbarOpen(true);
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
+  const fetchStudents = async () => {
+      try {
+          const response = await studentService.getAll();
+          setStudents(response);
+      } catch (error) {
+          setSnackbarSeverity('error');
+          setSnackbarMessage('Erro ao buscar alunos.');
+          setSnackbarOpen(true);
+          console.error('Erro ao buscar alunos:', error);
+      } finally {
+          setLoading(false);
+      }
+  };
+
+  const fetchSchools = async () => {
+      try {
+          const response = await schoolService.getAll();
+          setSchools(response);
+      } catch (error) {
+          setSnackbarSeverity('error');
+          setSnackbarMessage('Erro ao buscar escolas.');
+          setSnackbarOpen(true);
+      } finally {
+          setLoading(false);
+      }
+  };
+
   const onRequestServiceCompletedAction = () => {
-      fetchRequests();
+      fetchRequests(page, rowsPerPage);
   };
 
   const handleEdit = (request) => {
@@ -66,15 +98,16 @@ function TransportRequestPage() {
   };
 
   const handleConfirmDelete = async (resquestId) => {
+    if (deleteLoading) return;
     setDeleteLoading(true);
     try {
       await transportRequestService.delete(resquestId);
       setSnackbarMessage('Solicitação excluída com sucesso');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
-      fetchRequests();
+      fetchRequests(page, rowsPerPage);
     } catch (err) {
-      setSnackbarMessage('Erro ao excluir solicitação. Tente novamente mais tarde.');
+      setSnackbarMessage('Erro ao excluir solicitação.');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
       console.error(err);
@@ -94,6 +127,8 @@ function TransportRequestPage() {
 
   useEffect(() => {
     fetchRequests(page, rowsPerPage);
+    fetchSchools();
+    fetchStudents();
   }, [page, rowsPerPage]);
 
   const handlePageChange = (newPage) => {
@@ -117,7 +152,6 @@ function TransportRequestPage() {
           sx={{ mb: 2 }}>
           Solicitar transporte
         </Button>
-        {error && <Typography color="error">{error}</Typography>}
         <TransportRequestTable
           requests={requests}
           page={page}
@@ -131,12 +165,14 @@ function TransportRequestPage() {
           open={openModal} 
           onClose={handleCloseModal} 
           fullWidth maxWidth="md">
-          <DialogTitle>Nova Escola</DialogTitle>
+          <DialogTitle>Solicitação</DialogTitle>
           <DialogContent>
             <TransportRequestForm 
               onClose={handleCloseModal} 
               onRequestServiceCompletedAction={onRequestServiceCompletedAction}
-              requestToEdit={selectedRequestToEdit} />
+              requestToEdit={selectedRequestToEdit}
+              students={students}
+              schools={schools} />
           </DialogContent>
         </Dialog>
         <Dialog open={confirmDelete !== null} onClose={handleCancelDelete}>

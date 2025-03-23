@@ -94,12 +94,15 @@ function SchoolTable({ requests, loading, onEdit, onDelete }) {
                           <EditIcon />
                       </IconButton>
                   </Tooltip>
-                  <Tooltip title="Deletar">
-                      <IconButton 
+                  <Tooltip title={request.requests && request.requests.length > 0 ? "Vinculado a Solicitação de Transporte" : "Deletar"}>
+                    <span>
+                      <IconButton
                         onClick={() => onDelete(request)}
-                        color="error">
-                          <DeleteIcon />
+                        color="error"
+                        disabled={request.requests && request.requests.length > 0}>
+                        <DeleteIcon />
                       </IconButton>
+                    </span>
                   </Tooltip>
                 </TableCell>
               </TableRow>
@@ -117,7 +120,6 @@ function SchoolTable({ requests, loading, onEdit, onDelete }) {
               <Typography>Endereço: {selectedSchool.address}</Typography>
               <Typography>CEP: {formatCEP(selectedSchool.zipCode)}</Typography>
               <Typography>Telefone: {formatPhoneNumber(selectedSchool.phone)}</Typography>
-              {/* Adicione outros detalhes aqui */}
             </DialogContentText>
           )}
         </DialogContent>
