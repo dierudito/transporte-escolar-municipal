@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { 
   Container,
@@ -13,6 +13,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import userService from '../services/userService';
 
 function LoginPage() {
+  useEffect(() => {
+    document.title = 'Login - Transporte Escolar';
+    return () => {
+      document.title = 'Transporte Escolar';
+    };
+  }, []);
   const { register, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       email: '',

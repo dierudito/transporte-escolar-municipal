@@ -108,6 +108,7 @@ function StudentPage() {
     };
 
     useEffect(() => {
+        document.title = 'Aluno - Transporte Escolar';
         fetchStudents();
         fetchUsers();
     }, []);

@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Typography, Button, Stack } from '@mui/material';
 import Layout from '../components/Layout';
 
 function HomePage() {
+  useEffect(() => {
+    document.title = 'Home - Transporte Escolar';
+    return () => {
+      document.title = 'Transporte Escolar'; // Ou seu título padrão
+    };
+  }, []);
     return (
       <Layout>
         <Container maxWidth="sm" sx={{ mt: 8 }}>

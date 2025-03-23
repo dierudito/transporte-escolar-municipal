@@ -126,6 +126,7 @@ function TransportRequestPage() {
   };
 
   useEffect(() => {
+    document.title = 'Solicitação de Transporte - Transporte Escolar';
     fetchRequests(page, rowsPerPage);
     fetchSchools();
     fetchStudents();

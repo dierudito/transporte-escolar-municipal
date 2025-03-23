@@ -93,6 +93,7 @@ function SchoolPage() {
   };
 
   useEffect(() => {
+    document.title = 'Escola - Transporte Escolar';
     fetchRequests();
   }, []);
 

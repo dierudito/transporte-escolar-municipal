@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { 
   Container,
@@ -15,6 +15,12 @@ import userService from '../services/userService';
 import { Link, useNavigate } from 'react-router-dom';
 
 function RegisterPage() {
+  useEffect(() => {
+    document.title = 'Cadastrar - Transporte Escolar';
+    return () => {
+      document.title = 'Transporte Escolar';
+    };
+  }, []);
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [loading, setLoading] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
