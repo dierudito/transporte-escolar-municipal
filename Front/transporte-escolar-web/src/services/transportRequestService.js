@@ -20,13 +20,13 @@ const transportRequestService = {
     } catch (error) {
       let errorMessage = 'Erro ao buscar as solicitações';
       if (error.response) {
-        console.error('Erro de busca:', error.response.data);
+        
         errorMessage = error.response.data.message || errorMessage;
       } else if (error.request) {
-        console.error('Erro de busca:', error.request);
+        
         errorMessage = 'Não foi possível conectar ao servidor';
       } else {
-        console.error('Erro de busca:', error.message);
+        
         errorMessage = 'Erro ao processar a requisição';
       }
       throw new Error(errorMessage);
@@ -39,13 +39,13 @@ const transportRequestService = {
     } catch (error) {
       let errorMessage = 'Erro ao criar a solicitação';
       if (error.response) {
-        console.error('Erro de criação:', error.response.data);
+        
         errorMessage = error.response.data.message || errorMessage;
       } else if (error.request) {
-        console.error('Erro de criação:', error.request);
+        
         errorMessage = 'Não foi possível conectar ao servidor';
       } else {
-        console.error('Erro de criação:', error.message);
+        
         errorMessage = 'Erro ao processar a requisição';
       }
       throw new Error(errorMessage);
@@ -58,13 +58,13 @@ const transportRequestService = {
     } catch (error) {
       let errorMessage = 'Erro ao atualizar a solicitação';
       if (error.response) {
-        console.error('Erro de atualização:', error.response.data);
+        
         errorMessage = error.response.data.message || errorMessage;
       } else if (error.request) {
-        console.error('Erro de atualização:', error.request);
+        
         errorMessage = 'Não foi possível conectar ao servidor';
       } else {
-        console.error('Erro de atualização:', error.message);
+        
         errorMessage = 'Erro ao processar a requisição';
       }
       throw new Error(errorMessage);
@@ -77,13 +77,13 @@ const transportRequestService = {
     } catch (error) {
       let errorMessage = 'Erro ao deletar a solicitação';
       if (error.response) {
-        console.error('Erro de deleção:', error.response.data);
+        
         errorMessage = error.response.data.message || errorMessage;
       } else if (error.request) {
-        console.error('Erro de deleção:', error.request);
+        
         errorMessage = 'Não foi possível conectar ao servidor';
       } else {
-        console.error('Erro de deleção:', error.message);
+        
         errorMessage = 'Erro ao processar a requisição';
       }
       throw new Error(errorMessage);

@@ -146,7 +146,6 @@ function TransportRequestTable({ requests, page, rowsPerPage, onPageChange, onRo
               <Typography>Escola: {selectedRequest.schoolName}</Typography>
               <Typography>Status: {translateStatus(selectedRequest.statusRequest)}</Typography>
               <Typography>Data: {fomartDatePtBr(selectedRequest.requestDate)}</Typography>
-              {/* Adicione outros detalhes aqui */}
             </DialogContentText>
           )}
         </DialogContent>

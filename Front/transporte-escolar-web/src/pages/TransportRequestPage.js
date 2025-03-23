@@ -51,7 +51,7 @@ function TransportRequestPage() {
       setSnackbarSeverity('error');
       setSnackbarMessage('Erro ao buscar solicitações.');
       setSnackbarOpen(true);
-      console.error(err);
+      
     } finally {
       setLoading(false);
     }
@@ -65,7 +65,7 @@ function TransportRequestPage() {
           setSnackbarSeverity('error');
           setSnackbarMessage('Erro ao buscar alunos.');
           setSnackbarOpen(true);
-          console.error('Erro ao buscar alunos:', error);
+          
       } finally {
           setLoading(false);
       }
@@ -110,7 +110,7 @@ function TransportRequestPage() {
       setSnackbarMessage('Erro ao excluir solicitação.');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
-      console.error(err);
+      
     } finally {
       setDeleteLoading(false);
       setConfirmDelete(null);

@@ -25,7 +25,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {fomartDatePtBr, formatCEP, formatCPF} from '../utils/utils';
 
 function StudentTable({ requests, loading, onEdit, onDelete }) {
-  console.log('StudentTable:', requests);
+  
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [hoveredRow, setHoveredRow] = useState(null);
@@ -117,7 +117,6 @@ function StudentTable({ requests, loading, onEdit, onDelete }) {
                 <Typography>CEP: {formatCEP(selectedStudent.zipCode)}</Typography>
                 <Typography>Nascimento: {fomartDatePtBr(selectedStudent.birthDate)}</Typography>
                 <Typography>CPF: {formatCPF(selectedStudent.cpf)}</Typography>
-                {/* Adicione outros detalhes aqui */}
                 </DialogContentText>
             )}
             </DialogContent>

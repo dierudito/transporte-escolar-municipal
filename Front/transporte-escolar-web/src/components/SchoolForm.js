@@ -49,11 +49,11 @@ function SchoolForm({ onClose, onSchoolServiceCompletedAction, schoolToEdit }) {
       if (schoolToEdit) {
           responseData = await schoolService.update(schoolToEdit.id, schoolData);
           setSnackbarMessage(responseData.message || 'Escola atualizada com sucesso!');
-          console.log('Escola atualizada:', responseData);
+          
       } else {
           responseData = await schoolService.create(schoolData);
           setSnackbarMessage(responseData.message || 'Escola cadastrada com sucesso!');
-          console.log('Escola cadastrada:', responseData);
+          
       }
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
@@ -62,7 +62,7 @@ function SchoolForm({ onClose, onSchoolServiceCompletedAction, schoolToEdit }) {
       onSchoolServiceCompletedAction();
       onClose();}, 1500);
     } catch (error) {
-      console.error('Erro ao alterar escola:', error);
+      
       setSnackbarMessage(
         error.message || 'Erro ao ' || (schoolToEdit ? 'atualizar' : 'criar') || ' escola.');
       setSnackbarSeverity('error');

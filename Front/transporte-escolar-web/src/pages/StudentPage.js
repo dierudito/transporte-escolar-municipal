@@ -47,7 +47,7 @@ function StudentPage() {
             setSnackbarSeverity('error');
             setSnackbarMessage('Erro ao buscar alunos.');
             setSnackbarOpen(true);
-            console.error('Erro ao buscar alunos:', error);
+            
         } finally {
             setLoading(false);
         }
@@ -61,7 +61,7 @@ function StudentPage() {
             setSnackbarSeverity('error');
             setSnackbarMessage('Erro ao buscar usuários.');
             setSnackbarOpen(true);
-            console.error('Erro ao buscar usuários:', error);
+            
         }
     };
 
@@ -88,7 +88,7 @@ function StudentPage() {
             setSnackbarSeverity('success');
             onStudentServiceCompletedAction();
         } catch (error) {
-            console.error('Erro ao excluir aluno:', error);
+            
             setSnackbarMessage('Erro ao excluir aluno.');
             setSnackbarSeverity('error');
             setSnackbarOpen(true);

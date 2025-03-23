@@ -24,7 +24,7 @@ function RegisterPage() {
 
   const onSubmit = async (data) => {
     setLoading(true);
-    console.log(data);
+    
     try {
       const newUser = {
         name: data.name,
@@ -33,7 +33,7 @@ function RegisterPage() {
         userType: 1
       };
       const responseData = await userService.register(newUser);
-      console.log('Usuário cadastrado:', responseData);
+      
       setSnackbarMessage('Usuário cadastrado com sucesso! Por favor, faça login.');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
@@ -41,7 +41,7 @@ function RegisterPage() {
         navigate('/login');
       }, 1500);
     } catch (error) {
-      console.error('Erro ao cadastrar usuário:', error);
+      
       setSnackbarMessage(error.message || 'Erro ao cadastrar usuário. Verifique o console para mais informações.');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);

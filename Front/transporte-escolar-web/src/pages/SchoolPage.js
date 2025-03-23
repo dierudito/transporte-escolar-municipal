@@ -41,11 +41,11 @@ function SchoolPage() {
     setLoading(true);
     try {
       const data = await schoolService.getAll();
-      console.log(data);
+      
       setRequests(data);
     } catch (err) {
       setError('Erro ao buscar escolas. Tente novamente mais tarde.');
-      console.error(err);
+      
     } finally {
       setLoading(false);
     }
@@ -56,7 +56,7 @@ function SchoolPage() {
   };
 
   const handleEdit = (school) => {
-      console.log(school);
+      
       setSelectedSchoolToEdit(school);
       setOpenModal(true);
   };
@@ -77,7 +77,7 @@ function SchoolPage() {
       setSnackbarMessage('Erro ao excluir escola. Tente novamente mais tarde.');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
-      console.error(err);
+      
     } finally {
       setConfirmDelete(null);
       setDeleteLoading(false);

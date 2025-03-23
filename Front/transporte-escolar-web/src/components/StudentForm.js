@@ -75,7 +75,7 @@ function StudentForm({ onClose, onStudentServiceCompletedAction, studentToEdit, 
                 onClose();
             }, 1500);
         } catch (error) {
-            console.error('Erro ao salvar aluno:', error);
+            
             setSnackbarSeverity('error');
             setSnackbarMessage('Erro ao salvar aluno.');
             setSnackbarOpen(true);

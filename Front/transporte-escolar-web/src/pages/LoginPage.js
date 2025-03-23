@@ -27,19 +27,19 @@ function LoginPage() {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
+    
     setLoading(true);
     setLoginError('');
     try {
       const responseData = await userService.login(data);
-      console.log('Login bem-sucedido:', responseData);
+      
 
       localStorage.setItem('token', responseData.token);
       localStorage.setItem('user', JSON.stringify(responseData.user));
       
       navigate('/user/dashboard');
     } catch (error) {
-      console.error('Erro de login:', error);
+      
       setLoginError(error.message || 'Credenciais inválidas. Por favor, tente novamente.');
     } finally {
       setLoading(false);
